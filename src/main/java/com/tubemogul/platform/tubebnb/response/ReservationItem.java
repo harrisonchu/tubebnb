@@ -11,26 +11,15 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({"@uri", "reservation_id"})
 public class ReservationItem {
 
-
-    @JsonProperty("@uri")
-    private String uri;
-
     @JsonProperty("reservation_id")
-    private String reservationId;
+    private Long reservationId;
 
-    public String getUri() {
-        return uri;
-    }
 
-    public void setUri(String uri) {
-        this.uri = uri;
-    }
-
-    public String getReservationId() {
+    public Long getReservationId() {
         return reservationId;
     }
 
-    public void setReservationId(String reservationId) {
+    public void setReservationId(Long reservationId) {
         this.reservationId = reservationId;
     }
 }
