@@ -51,3 +51,18 @@ user.dao.create.table.statement: CREATE TABLE Users
 user.dao.get.user.statement: SELECT * FROM Users WHERE user_id = ?;
 user.dao.create.user.statement: INSERT INTO Users (name, email, office, phone_number, is_notify_on_reservation)
                                   VALUES (?, ?, ?, ?, ?);
+
+reservation.dao.create.table.statement: CREATE TABLE Reservations
+                                        (
+                                        reservation_id INTEGER NOT NULL AUTO_INCREMENT,
+                                        listing_id INTEGER,
+                                        host_user_id INTEGER,
+                                        location_id INTEGER,
+                                        traveler_user_id, INTEGER,
+                                        start_time TIMESTAMP,
+                                        end_time TIMESTAMP,
+                                        status ENUM(‘completed’, ‘pending’)
+                                        timezone VARCHAR(255)
+                                        FOREIGN KEY (host_user_id) REFERENCES Users(user_id),
+                                        FOREIGN KEY (traveler_user_id) REFERENCES Users(user_id)
+
