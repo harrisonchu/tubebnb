@@ -45,10 +45,12 @@ user.dao.create.table.statement: CREATE TABLE IF NOT EXISTS Users
                                  office VARCHAR(255),
                                  phone_number BIGINT(20),
                                  is_notify_on_reservation BOOL,
-                                 PRIMARY KEY(user_id)
+                                 PRIMARY KEY(user_id),
+                                 UNIQUE (email)
                                  );
 
 user.dao.get.user.statement: SELECT * FROM Users WHERE user_id = ?;
+user.dao.get.user.by.email: SELECT * FROM Users WHERE name = ?;
 user.dao.create.user.statement: INSERT INTO Users (name, email, office, phone_number, is_notify_on_reservation)
                                   VALUES (?, ?, ?, ?, ?);
 

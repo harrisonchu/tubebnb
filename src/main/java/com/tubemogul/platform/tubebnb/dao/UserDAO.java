@@ -29,6 +29,9 @@ public class UserDAO {
     @Value("${user.dao.create.user.statement}")
     private String createUserString = null;
 
+    @Value("${user.dao.get.user.by.email}")
+    private String getUserByEmail = null;
+
     private Connection connection;
 
     @PostConstruct
@@ -50,7 +53,7 @@ public class UserDAO {
         try {
             stmt = connection.prepareStatement(getUserString);
             stmt.setInt(1, userId);
-            rs = stmt.executeQuery(getUserString);
+            rs = stmt.executeQuery();
             String name = rs.getString("name");
             String email = rs.getString("email");
             String office = rs.getString("office");
@@ -73,6 +76,40 @@ public class UserDAO {
         /* If no user returned, then null */
         return null;
     }
+
+    /**
+     * @return a immutable {@link User} Object based on the email.  Returns null if no user record is found
+     */
+    public User getUser(String userEmail) {
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+        try {
+            stmt = connection.prepareStatement(getUserByEmail);
+            stmt.setString(1, userEmail);
+            rs = stmt.executeQuery();
+            int userId = rs.getInt("user_id");
+            String name = rs.getString("name");
+            String office = rs.getString("office");
+            long phoneNumber = rs.getLong("phone_number");
+            boolean notifyOnReservation = rs.getBoolean("is_notify_on_reservation");
+
+            User user = new User(userId, name, userEmail, office, phoneNumber, notifyOnReservation);
+            return user;
+        } catch (Exception e) {
+            LOGGER.error("An exception occurred while trying to retrieve a user");
+        } finally {
+            try {
+                stmt.close();
+            } catch (Exception e) {}
+            try {
+                rs.close();
+            } catch (Exception e) {}
+        }
+
+        /* If no user returned, then null */
+        return null;
+    }
+
 
     /**
      * @return true if creation was successful, false if not
@@ -111,6 +148,10 @@ public class UserDAO {
                 throw new Exception("Error creating directory for H2 database.");
             }
         }
+    }
+
+    public void setGetUserByEmail(String getUserByEmail) {
+        this.getUserByEmail = getUserByEmail;
     }
 
     public void setGetUserString(String getUserString) {
