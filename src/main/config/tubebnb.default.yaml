@@ -1,0 +1,67 @@
+---
+server:
+  applicationConnectors:
+    - type: http
+      port: 8080
+  adminConnectors:
+    - type: http
+      port: 8081
+
+
+promo2:
+    driverClass: com.mysql.jdbc.Driver
+
+    validationQuery: "SELECT 1"
+
+    # the maximum amount of time to wait on an empty pool before throwing an exception
+    maxWaitForConnection: 1s
+
+    # the minimum number of connections to keep open
+    minSize: 5
+
+    # the maximum number of connections to keep open
+    maxSize: 30
+
+    # whether or not idle connections should be validated
+    checkConnectionWhileIdle: true
+
+    checkConnectionOnBorrow: true
+
+    # the amount of time to sleep between runs of the idle connection validation, abandoned cleaner and idle pool resizing
+    evictionInterval: 10s
+
+    # the minimum amount of time an connection must sit idle in the pool before it is eligible for eviction
+    minIdleTime: 1 minute
+
+
+# Logging settings.
+logging:
+
+  # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
+  level: INFO
+
+  # Logger-specific levels.
+  loggers:
+
+    # Sets the level for 'com.example.app' to DEBUG.
+    com.tubemogul.api.fees: DEBUG
+
+
+  appenders:
+    - type: file
+      currentLogFilename: /mnt/logs/fees-api.log
+      threshold: DEBUG
+      archive: true
+      archivedLogFilenamePattern: /mnt/logs/fees-api-%d.log
+      archivedFileCount: 10
+      timeZone: UTC
+      logFormat: -%d{yyyy-MM-dd HH:mm:ss}  [%thread] %-5level %logger{35} - %msg %n
+
+
+promo2.threshold: 5
+retry.threshold: 20
+
+cors.allowedMethodsParam: GET,PUT,POST,DELETE,OPTIONS
+cors.allowedOriginsParam: "*"
+cors.allowedHeadersParam: Authorization,X-Requested-With,Content-Type,Accept,Origin,Content-Length
+cors.preflightMaxAgeParam: 5184000

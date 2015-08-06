@@ -1,0 +1,11 @@
+#!/bin/bash
+
+PATH=$PATH:/usr/sbin:/sbin
+
+if [ $(lsof -i :8080 | grep -c LISTEN) -ne 1 ]; then
+    echo "NOK"
+    exit 1
+else
+    echo "OK"
+    exit 0
+fi

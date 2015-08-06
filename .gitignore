@@ -1,0 +1,15 @@
+.idea/misc.xml
+target
+*.iml
+
+.idea
+
+dependency-reduced-pom.xml
+
+bundles
+
+.classpath
+
+.project
+
+*.prefs

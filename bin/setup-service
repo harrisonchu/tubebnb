@@ -1,0 +1,209 @@
+#!/bin/bash
+
+SEVICE_NAME=tubebnb
+
+TUBEBNB_DIR=/opt/tubebnb
+
+hostname=$(hostname)
+
+JMX_HOSTNAME=$hostname
+
+facter=$(which facter)
+if [ $? -eq 0 ]; then
+    region=$(facter -p ec2_region)
+    zone=$(facter -p ec2_placement_availability_zone)
+    nagios_host=$(facter -p ec2_tag_nagios_host)
+    vpc=$(facter -p vpc)
+ 
+    # hack until devzone returns "dev" for vpc (see INF-2836)
+    security_groups=$(facter -p ec2_security_groups)
+else
+    region="us-east-1"
+    zone=$(hostname -f | cut -f 2 -d .)
+    nagios_host=mgmt01
+    vpc=prod
+    security_groups=$(curl -s http://169.254.169.254/latest/meta-data/security-groups)
+fi
+
+echo "vpc  " $vpc
+echo "security_groups " $security_groups
+echo "hostname  " $hostname
+
+
+if [[ "$vpc" == "dev" || "$security_groups" =~ .*devzone.* || "$hostname" =~ dev-.* ]]; then
+    # Link dev zone config
+    for f in $(ls $TUBEBNB_DIR/conf/*.dev.${zone} 2>/dev/null | sed -e "s/\.dev\.${zone}//"); do
+        ln -s $f.dev.${zone} $f
+    done
+
+    # Link dev config
+    for f in $(ls $TUBEBNB_DIR/conf/*.dev | sed -e 's/\.dev//'); do
+        test -L "$f" || ln -s $f.dev $f
+    done
+
+    #set up dev jmx hostname
+    JMX_HOSTNAME="$JMX_HOSTNAME.us-east-1b.public"
+
+elif [[ "$vpc" == "uat" || "$hostname" =~ uat-.*   ]]; then
+ # Link uat zone config
+    for f in $(ls $TUBEBNB_DIR/conf/*.uat.${zone} 2>/dev/null | sed -e "s/\.uat\.${zone}//"); do
+        ln -s $f.uat.${zone} $f
+    done
+
+    # Link dev config
+    for f in $(ls $TUBEBNB_DIR/conf/*.uat | sed -e 's/\.uat//'); do
+        test -L "$f" || ln -s $f.uat $f
+    done
+
+    #set up dev jmx hostname
+    JMX_HOSTNAME="$JMX_HOSTNAME.us-east-1a.public"
+
+
+elif [[ "$vpc" == "qa" || "$hostname" =~ qa-.*  ]]; then
+    # QA
+    # Link uat zone config
+    for f in $(ls $TUBEBNB_DIR/conf/*.qa.${zone} 2>/dev/null | sed -e "s/\.qa\.${zone}//"); do
+        ln -s $f.qa.${zone} $f
+    done
+
+    # Link dev config
+    for f in $(ls $TUBEBNB_DIR/conf/*.qa | sed -e 's/\.qa//'); do
+        test -L "$f" || ln -s $f.qa $f
+    done
+
+    #set up dev jmx hostname
+    JMX_HOSTNAME="$JMX_HOSTNAME.us-east-1a.public"
+
+else
+    # PROD
+    # default to do stuff for production (see INF-2836)
+
+  # Link localized config first
+    for f in $(ls $TUBEBNB_DIR/conf/*.$zone | sed -e "s/\.$zone//"); do
+        ln -s $f.$zone $f
+    done
+    # Link remaining prod config
+    for f in $(ls $TUBEBNB_DIR/conf/*.prod | sed -e 's/\.prod//'); do
+        test -L "$f" || ln -s $f.prod $f
+    done
+    #set up jmx host name for prod
+    JMX_HOSTNAME="$JMX_HOSTNAME.us-east-1d.public"
+
+fi
+
+
+
+
+chmod +x $TUBEBNB_DIR/bin/*
+if [ -f /etc/redhat-release ]
+then
+    mv $TUBEBNB_DIR/bin/tubebnb.rhel.initd /etc/init.d/tubebnb
+    /sbin/chkconfig --add tubebnb
+    /sbin/chkconfig tubebnb on
+else
+    mv $TUBEBNB_DIR/bin/tubebnb.ubuntu.initd /etc/init.d/tubebnb
+    /usr/sbin/update-rc.d tubebnb defaults
+fi
+
+chown -R root:root $TUBEBNB_DIR
+
+if [ -d /opt/java ]
+then
+    JAVA_HOME=/opt/java
+fi
+
+if [[  "$vpc" == "dev" || "$security_groups" =~ .*devzone.* || "$hostname" =~ dev-.* ]]; then
+
+# Devzone setup
+>/etc/default/tubebnb cat <<EOF
+TUBEBNB_DIR=$TUBEBNB_DIR
+JAVA_PORT=8080
+LOG_DIR=\${TUBEBNB_DIR}/logs/tubebnb/jdbc/\${JAVA_PORT}
+
+JAVA_OPTS="\\
+     -Djava.rmi.server.hostname=${JMX_HOSTNAME} \\
+    -Dcom.sun.management.jmxremote \\
+    -Dcom.sun.management.jmxremote.ssl=false \\
+    -Dcom.sun.management.jmxremote.authenticate=false \\
+    -Dcom.sun.management.jmxremote.port=8001 \\
+    -Dlog.base.dir=\$LOG_DIR \\
+    -Djava.net.preferIPv4Stack=true \\
+    -server \\
+    -verbose:gc \\
+    -Xmx2g \\
+    -Xms2g \\
+    -XX:MaxPermSize=256m \\
+    -XX:+UseStringCache \\
+    -XX:+OptimizeStringConcat \\
+    -XX:HeapDumpPath=./logs \\
+    -XX:-HeapDumpOnOutOfMemoryError \\
+    -XX:+UseFastAccessorMethods \\
+    -XX:+UseGCOverheadLimit \\
+    -XX:+UseConcMarkSweepGC \\
+    -XX:+UseParNewGC \\
+    -XX:+DisableExplicitGC \\
+    -XX:+PrintGCDetails \\
+    -XX:NewRatio=2 \\
+    -Xloggc:/mnt/logs/tubebnb/tubebnb-gc.log \\
+    -XX:+PrintGCDateStamps \\
+    -XX:CMSInitiatingOccupancyFraction=50 \\
+    -XX:+UseCMSInitiatingOccupancyOnly \\
+    -XX:CMSWaitDuration=5000 \\
+    -XX:+ScavengeBeforeFullGC \\
+    -XX:+UseGCOverheadLimit \\
+    -XX:+CMSScavengeBeforeRemark \\
+
+    "  
+
+EOF
+
+else
+
+# Production setup
+>/etc/default/tubebnb cat <<EOF
+TUBEBNB_DIR=$TUBEBNB_DIR
+JAVA_PORT=8080
+LOG_DIR=\${TUBEBNB_DIR}/logs/tubebnb/jdbc/\${JAVA_PORT}
+
+
+JAVA_OPTS="\\
+     -Djava.rmi.server.hostname=${JMX_HOSTNAME} \\
+    -Dcom.sun.management.jmxremote \\
+    -Dcom.sun.management.jmxremote.ssl=false \\
+    -Dcom.sun.management.jmxremote.authenticate=false \\
+    -Dcom.sun.management.jmxremote.port=8001 \\
+    -Dlog.base.dir=\$LOG_DIR \\
+    -Djava.net.preferIPv4Stack=true \\
+    -server \\
+    -verbose:gc \\
+    -Xmx4g \\
+    -Xms4g \\
+    -XX:NewRatio=2 \\
+    -XX:MaxPermSize=512m \\
+    -XX:+UseStringCache \\
+    -XX:+OptimizeStringConcat \\
+    -XX:HeapDumpPath=./logs \\
+    -XX:-HeapDumpOnOutOfMemoryError \\
+    -XX:+UseFastAccessorMethods \\
+    -XX:+UseGCOverheadLimit \\
+    -XX:+UseConcMarkSweepGC \\
+    -XX:+UseParNewGC \\
+    -XX:+DisableExplicitGC \\
+    -XX:+PrintGCDetails \\
+    -Xloggc:/mnt/logs/tubebnb/tubebnb-gc.log \\
+    -XX:+PrintGCDateStamps \\
+    -XX:CMSInitiatingOccupancyFraction=50 \\
+    -XX:+UseCMSInitiatingOccupancyOnly \\
+    -XX:CMSWaitDuration=5000 \\
+    -XX:+ScavengeBeforeFullGC \\
+    -XX:+UseGCOverheadLimit \\
+    -XX:+CMSScavengeBeforeRemark \\
+
+    "  
+
+
+
+
+EOF
+
+fi

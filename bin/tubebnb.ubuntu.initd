@@ -1,0 +1,50 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          tubebnb
+# Required-Start:    $network $named $remote_fs $syslog
+# Required-Stop:     $network $named $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+### END INIT INFO
+
+NAME=tubebnb
+DESC="Tubebnb Api Daemon"
+
+[ -f /etc/default/tubebnb ] && . /etc/default/tubebnb
+
+[ -z "$JAVA_HOME" ] && JAVA_HOME=/opt/java
+
+TUBEBNB_JAR=$(ls $TUBEBNB_DIR/target/fees-api-*.jar)
+JAVA_CLASSPATH="$JAVA_CLASSPATH:$CLASS_PATH:$TUBEBNB_JAR:$TUBEBNB_DIR/conf"
+
+DAEMON=$JAVA_HOME/bin/java
+
+
+DAEMON_OPTS="$JAVA_OPTS -server -classpath $JAVA_CLASSPATH com.tubemogul.platform.tubebnb.TubeBnbServer server  $TUBEBNB_DIR/conf/tubebnb.yml"
+
+case "$1" in
+  start)
+    echo -n "Starting $DESC: "
+    start-stop-daemon --start --chdir $TUBEBNB_DIR --quiet -b -m --pidfile /var/run/$NAME.pid \
+        --exec $DAEMON -- $DAEMON_OPTS
+    echo "$NAME."
+    ;;
+  stop)
+    echo -n "Stopping $DESC: "
+        start-stop-daemon --stop  --quiet --oknodo --pidfile /var/run/$NAME.pid \
+                2>&1 > /dev/null
+    echo "$NAME."
+    ;;
+  reload)
+    ;;
+  restart|force-reload)
+    $0 stop
+    $0 start
+    ;;
+  *)
+    N=/etc/init.d/$NAME
+    # echo "Usage: $N {start|stop|restart|reload|force-reload}" >&2
+    echo "Usage: $N {start|stop|restart|force-reload}" >&2
+    exit 1
+    ;;
+esac
