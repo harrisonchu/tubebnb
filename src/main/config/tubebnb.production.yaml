@@ -1,9 +1,3 @@
 ---
 
 
-nagios.nscaHost: mgmt01
-nagios.nscaPort: 5667
-nagios.nscaPass: r5gU8ma43Yz
-
-ganglia.port: 8649
-ganglia.host: mgmt01

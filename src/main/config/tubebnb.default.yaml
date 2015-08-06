@@ -32,9 +32,6 @@ logging:
       logFormat: -%d{yyyy-MM-dd HH:mm:ss}  [%thread] %-5level %logger{35} - %msg %n
 
 
-promo2.threshold: 5
-retry.threshold: 20
-
 cors.allowedMethodsParam: GET,PUT,POST,DELETE,OPTIONS
 cors.allowedOriginsParam: "*"
 cors.allowedHeadersParam: Authorization,X-Requested-With,Content-Type,Accept,Origin,Content-Length
