@@ -37,7 +37,7 @@ cors.allowedOriginsParam: "*"
 cors.allowedHeadersParam: Authorization,X-Requested-With,Content-Type,Accept,Origin,Content-Length
 cors.preflightMaxAgeParam: 5184000
 
-user.dao.create.table.statement: CREATE TABLE Users
+user.dao.create.table.statement: CREATE TABLE IF NOT EXISTS Users
                                  (
                                  user_id BIGINT(20) AUTO_INCREMENT,
                                  name VARCHAR(255),
@@ -45,10 +45,12 @@ user.dao.create.table.statement: CREATE TABLE Users
                                  office VARCHAR(255),
                                  phone_number BIGINT(20),
                                  is_notify_on_reservation BOOL,
-                                 PRIMARY KEY(user_id)
+                                 PRIMARY KEY(user_id),
+                                 UNIQUE (email)
                                  );
 
 user.dao.get.user.statement: SELECT * FROM Users WHERE user_id = ?;
+user.dao.get.user.by.email: SELECT * FROM Users WHERE name = ?;
 user.dao.create.user.statement: INSERT INTO Users (name, email, office, phone_number, is_notify_on_reservation)
                                   VALUES (?, ?, ?, ?, ?);
 
@@ -61,8 +63,7 @@ reservation.dao.create.table.statement: CREATE TABLE Reservations
                                         traveler_user_id, INTEGER,
                                         start_time TIMESTAMP,
                                         end_time TIMESTAMP,
-                                        status ENUM(‘completed’, ‘pending’)
+                                        status ENUM('completed','pending','canceled'),
                                         timezone VARCHAR(255)
                                         FOREIGN KEY (host_user_id) REFERENCES Users(user_id),
                                         FOREIGN KEY (traveler_user_id) REFERENCES Users(user_id)
-

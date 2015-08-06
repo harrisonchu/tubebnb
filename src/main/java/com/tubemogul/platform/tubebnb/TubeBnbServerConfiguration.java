@@ -29,6 +29,17 @@ public class TubeBnbServerConfiguration extends Configuration {
     @JsonProperty("user.dao.create.user.statement")
     private String userTableCreateUserString;
 
+    @JsonProperty("user.dao.get.user.by.email")
+    private String userTableGetUserByEmail;
+
+    public String getUserTableGetUserByEmail() {
+        return userTableGetUserByEmail;
+    }
+
+    public void setUserTableGetUserByEmail(String userTableGetUserByEmail) {
+        this.userTableGetUserByEmail = userTableGetUserByEmail;
+    }
+
     public String getUserTableCreateUserString() {
         return userTableCreateUserString;
     }
