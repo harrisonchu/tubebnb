@@ -42,7 +42,7 @@ public class UserDAO {
     }
 
     /**
-     * Returns a immutable User Object based on the userId.  Returns null if no user record is found
+     * @return a immutable {@link User} Object based on the userId.  Returns null if no user record is found
      */
     public User getUser(int userId) {
         ResultSet rs = null;
@@ -74,6 +74,9 @@ public class UserDAO {
         return null;
     }
 
+    /**
+     * @return true if creation was successful, false if not
+     */
     public boolean createUser(String name, String email, String office, long phoneNumber, boolean notifyOnReservation) {
         PreparedStatement stmt = null;
         boolean isSuccess = false;
