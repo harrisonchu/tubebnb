@@ -36,7 +36,7 @@ public class UserResource {
         UserItem userItem = new UserItem();
         userItem.setUserId(userId);
 
-        return Response.ok(userId).build();
+        return Response.ok(userItem).build();
 
     }
 }

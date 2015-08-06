@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  */
 
 
-@JsonPropertyOrder({"@uri", "reservation_id"})
+@JsonPropertyOrder({ "reservation_id"})
 public class ReservationItem {
 
     @JsonProperty("reservation_id")

@@ -32,8 +32,8 @@ public class ListingResource {
 
 
         ListingItem listingItem = new ListingItem();
-        listingItem.setListingId(1L);
-        return Response.ok(listingId).build();
+        listingItem.setListingId(listingId);
+        return Response.ok(listingItem).build();
 
     }
 }
