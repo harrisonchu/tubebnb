@@ -39,3 +39,15 @@ cors.allowedMethodsParam: GET,PUT,POST,DELETE,OPTIONS
 cors.allowedOriginsParam: "*"
 cors.allowedHeadersParam: Authorization,X-Requested-With,Content-Type,Accept,Origin,Content-Length
 cors.preflightMaxAgeParam: 5184000
+
+user.dao:
+  create.table.statement: CREATE TABLE Users
+                          (
+                          user_id BIGINT(20) AUTO_INCREMENT,
+                          name VARCHAR(255),
+                          email VARCHAR(255),
+                          office VARCHAR(255),
+                          phone_number BIGINT(20),
+                          is_notify_on_reservation BOOL,
+                          PRIMARY KEY(user_id)
+                          );
