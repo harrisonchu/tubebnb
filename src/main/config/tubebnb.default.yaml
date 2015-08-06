@@ -37,7 +37,7 @@ cors.allowedOriginsParam: "*"
 cors.allowedHeadersParam: Authorization,X-Requested-With,Content-Type,Accept,Origin,Content-Length
 cors.preflightMaxAgeParam: 5184000
 
-user.dao.create.table.statement: CREATE TABLE Users
+user.dao.create.table.statement: CREATE TABLE IF NOT EXISTS Users
                                  (
                                  user_id BIGINT(20) AUTO_INCREMENT,
                                  name VARCHAR(255),
@@ -65,4 +65,3 @@ reservation.dao.create.table.statement: CREATE TABLE Reservations
                                         timezone VARCHAR(255)
                                         FOREIGN KEY (host_user_id) REFERENCES Users(user_id),
                                         FOREIGN KEY (traveler_user_id) REFERENCES Users(user_id)
-
