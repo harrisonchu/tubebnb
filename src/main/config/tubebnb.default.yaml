@@ -49,3 +49,5 @@ user.dao.create.table.statement: CREATE TABLE Users
                                  );
 
 user.dao.get.user.statement: SELECT * FROM Users WHERE user_id = ?;
+user.dao.create.user.statement: INSERT INTO Users (name, email, office, phone_number, is_notify_on_reservation)
+                                  VALUES (?, ?, ?, ?, ?);

@@ -26,6 +26,9 @@ public class UserDAO {
     @Value("${user.dao.get.user.statement}")
     private String getUserString = null;
 
+    @Value("${user.dao.create.user.statement}")
+    private String createUserString = null;
+
     private Connection connection;
 
     @PostConstruct
@@ -57,7 +60,7 @@ public class UserDAO {
             User user = new User(userId, name, email, office, phoneNumber, notifyOnReservation);
             return user;
         } catch (Exception e) {
-            LOGGER.error("An exception occurred while tryiong to retrieve a user");
+            LOGGER.error("An exception occurred while trying to retrieve a user");
         } finally {
             try {
                 stmt.close();
@@ -69,6 +72,28 @@ public class UserDAO {
 
         /* If no user returned, then null */
         return null;
+    }
+
+    public boolean createUser(String name, String email, String office, long phoneNumber, boolean notifyOnReservation) {
+        PreparedStatement stmt = null;
+        boolean isSuccess = false;
+        try {
+            stmt = connection.prepareStatement(createUserString);
+            stmt.setString(1, name);
+            stmt.setString(2, email);
+            stmt.setString(3, office);
+            stmt.setLong(4, phoneNumber);
+            stmt.setBoolean(5, notifyOnReservation);
+            int rowsUpdated = stmt.executeUpdate();
+
+            /* Successful insert should only update one row */
+            isSuccess = rowsUpdated == 1;
+        } catch (Exception e) {
+            isSuccess = false;
+            LOGGER.error("An Exception occurreed while trying to create a user");
+        }
+
+        return isSuccess;
     }
 
     private void createTableIfNotExists() {
