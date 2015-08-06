@@ -182,11 +182,11 @@
             <artifactId>dropwizard-spring</artifactId>
             <version>0.3.2-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>com.tubemogul.playtime</groupId>
-            <artifactId>tm-finance</artifactId>
-            <version>${tm-finance.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.tubemogul.playtime</groupId>-->
+            <!--<artifactId>tm-finance</artifactId>-->
+            <!--<version>${tm-finance.version}</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-auth</artifactId>
@@ -199,16 +199,16 @@
             <version>${httpclient.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.tubemogul.rts</groupId>
-            <artifactId>authentication-service-api</artifactId>
-            <version>1.0.3</version>
-        </dependency>
-        <dependency>
-            <groupId>com.tubemogul.rts</groupId>
-            <artifactId>authentication-service-client</artifactId>
-            <version>1.0.3</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.tubemogul.rts</groupId>-->
+            <!--<artifactId>authentication-service-api</artifactId>-->
+            <!--<version>1.0.3</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>com.tubemogul.rts</groupId>-->
+            <!--<artifactId>authentication-service-client</artifactId>-->
+            <!--<version>1.0.3</version>-->
+        <!--</dependency>-->
     </dependencies>
 
 
