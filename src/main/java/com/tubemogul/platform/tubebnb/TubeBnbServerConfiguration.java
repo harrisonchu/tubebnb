@@ -50,6 +50,27 @@ public class TubeBnbServerConfiguration extends Configuration {
     @JsonProperty("listings.dao.create.listings.statement")
     private String listingTableCreateListingString;
 
+    @JsonProperty("notification.service.user")
+    private String notificationServiceUsername;
+
+    @JsonProperty("notification.service.password")
+    private String notificationServicePassword;
+
+    public String getNotificationServiceUsername() {
+        return notificationServiceUsername;
+    }
+
+    public void setNotificationServiceUsername(String notificationServiceUsername) {
+        this.notificationServiceUsername = notificationServiceUsername;
+    }
+
+    public String getNotificationServicePassword() {
+        return notificationServicePassword;
+    }
+
+    public void setNotificationServicePassword(String notificationServicePassword) {
+        this.notificationServicePassword = notificationServicePassword;
+    }
 
     @JsonProperty("db.directory")
     private String dbDirectory;
