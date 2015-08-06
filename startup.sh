@@ -1,4 +1,4 @@
-#! bin/bash
+#!/bin/bash
 
 JAR_FILE=$(ls ./target/tubebnb-*.jar)
 
