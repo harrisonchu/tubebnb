@@ -44,17 +44,17 @@ public class UserDAO {
     /**
      * @return a immutable {@link User} Object based on the userId.  Returns null if no user record is found
      */
-    public User getUser(int userId) {
+    public User getUser(Long userId) {
         ResultSet rs = null;
         PreparedStatement stmt = null;
         try {
             stmt = connection.prepareStatement(getUserString);
-            stmt.setInt(1, userId);
+            stmt.setLong(1, userId);
             rs = stmt.executeQuery(getUserString);
             String name = rs.getString("name");
             String email = rs.getString("email");
             String office = rs.getString("office");
-            long phoneNumber = rs.getLong("phone_number");
+            String phoneNumber = rs.getString("phone_number");
             boolean notifyOnReservation = rs.getBoolean("is_notify_on_reservation");
 
             User user = new User(userId, name, email, office, phoneNumber, notifyOnReservation);
@@ -77,7 +77,7 @@ public class UserDAO {
     /**
      * @return true if creation was successful, false if not
      */
-    public boolean createUser(String name, String email, String office, long phoneNumber, boolean notifyOnReservation) {
+    public boolean createUser(String name, String email, String office, String phoneNumber, boolean notifyOnReservation) {
         PreparedStatement stmt = null;
         boolean isSuccess = false;
         try {
@@ -85,7 +85,7 @@ public class UserDAO {
             stmt.setString(1, name);
             stmt.setString(2, email);
             stmt.setString(3, office);
-            stmt.setLong(4, phoneNumber);
+            stmt.setString(4, phoneNumber);
             stmt.setBoolean(5, notifyOnReservation);
             int rowsUpdated = stmt.executeUpdate();
 
