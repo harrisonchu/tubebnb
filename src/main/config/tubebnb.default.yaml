@@ -61,7 +61,7 @@ reservation.dao.create.table.statement: CREATE TABLE Reservations
                                         traveler_user_id, INTEGER,
                                         start_time TIMESTAMP,
                                         end_time TIMESTAMP,
-                                        status ENUM(‘completed’, ‘pending’)
+                                        status ENUM('completed','pending','canceled'),
                                         timezone VARCHAR(255)
                                         FOREIGN KEY (host_user_id) REFERENCES Users(user_id),
                                         FOREIGN KEY (traveler_user_id) REFERENCES Users(user_id)
