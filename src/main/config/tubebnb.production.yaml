@@ -1,11 +1,5 @@
 ---
 
-promo2:
-    user: fees_api
-
-    password: DjW2iDH82
-
-    url: jdbc:mysql://gw-ssh01.us-east-1b.private:3308/promo2?noAccessToProcedureBodies=true
 
 nagios.nscaHost: mgmt01
 nagios.nscaPort: 5667

@@ -8,32 +8,6 @@ server:
       port: 8081
 
 
-promo2:
-    driverClass: com.mysql.jdbc.Driver
-
-    validationQuery: "SELECT 1"
-
-    # the maximum amount of time to wait on an empty pool before throwing an exception
-    maxWaitForConnection: 1s
-
-    # the minimum number of connections to keep open
-    minSize: 5
-
-    # the maximum number of connections to keep open
-    maxSize: 30
-
-    # whether or not idle connections should be validated
-    checkConnectionWhileIdle: true
-
-    checkConnectionOnBorrow: true
-
-    # the amount of time to sleep between runs of the idle connection validation, abandoned cleaner and idle pool resizing
-    evictionInterval: 10s
-
-    # the minimum amount of time an connection must sit idle in the pool before it is eligible for eviction
-    minIdleTime: 1 minute
-
-
 # Logging settings.
 logging:
 
@@ -49,10 +23,10 @@ logging:
 
   appenders:
     - type: file
-      currentLogFilename: /mnt/logs/fees-api.log
+      currentLogFilename: /mnt/logs/tubebnb.log
       threshold: DEBUG
       archive: true
-      archivedLogFilenamePattern: /mnt/logs/fees-api-%d.log
+      archivedLogFilenamePattern: /mnt/logs/tubebnb-%d.log
       archivedFileCount: 10
       timeZone: UTC
       logFormat: -%d{yyyy-MM-dd HH:mm:ss}  [%thread] %-5level %logger{35} - %msg %n

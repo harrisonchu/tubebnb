@@ -15,18 +15,5 @@ logging:
   appenders:
     - type: console
  
-promo2:
 
-    user: fees_api
-
-    password: Vb7t!f8dnRtn
-
-    url: jdbc:mysql://dev-oltp01:3306/promo2?noAccessToProcedureBodies=true
-
-nagios.nscaHost: dev-mgmt01
-nagios.nscaPort: 5667
-nagios.nscaPass: r5gU8ma43Yz
-
-ganglia.port: 8649
-ganglia.host: dev-mgmt01
 
