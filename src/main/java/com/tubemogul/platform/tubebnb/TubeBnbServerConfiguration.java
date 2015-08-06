@@ -20,7 +20,19 @@ public class TubeBnbServerConfiguration extends Configuration {
     @JsonProperty("cors.preflightMaxAgeParam")
     private int preflightMaxAgeParam;
 
+    @JsonProperty("user.dao.create.table.statement")
+    private String userTableCreateString;
 
+    @JsonProperty("user.dao.get.user.statement")
+    private String userTableGetUserString;
+
+    public String getUserTableCreateString() {
+        return userTableCreateString;
+    }
+
+    public void setUserTableCreateString(String userTableCreateString) {
+        this.userTableCreateString = userTableCreateString;
+    }
 
     public String getAllowedMethodsParam() {
         return allowedMethodsParam;

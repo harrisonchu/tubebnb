@@ -9,10 +9,10 @@ public class User {
     private final String name;
     private final String email;
     private final String office;
-    private final int phoneNumber;
+    private final long phoneNumber;
     private final boolean notifyOnReservation;
 
-    public User(int userId, String name, String email, String office, int phoneNumber, boolean notifyOnReservation) {
+    public User(int userId, String name, String email, String office, long phoneNumber, boolean notifyOnReservation) {
         this.userId = userId;
         this.name = name;
         this.email = email;
@@ -37,7 +37,7 @@ public class User {
         return office;
     }
 
-    public int getPhoneNumber() {
+    public long getPhoneNumber() {
         return phoneNumber;
     }
 
