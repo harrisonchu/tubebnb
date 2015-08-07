@@ -55,7 +55,8 @@ public class EmailNotificationResource {
                 return Response.status(400).entity(error).build();
             }
 
-            notificationService.sendMessage(email, "You have a new request to stay at your sweet pad from AirTube!", description);
+            notificationService.sendMessage(email, "You have a new request to stay at your sweet pad from AirTube!", "From user " +
+                    travelerEmail + " \n\n\n" + description);
 
             notificationService.sendMessage(travelerEmail, "Your request to stay at a moguler's sweet pad", "Below is a copy "
                     + "of your original message \n\n\n " + description);
