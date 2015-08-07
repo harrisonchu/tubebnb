@@ -1,6 +1,7 @@
 package com.tubemogul.platform.tubebnb.service;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.Properties;
 
@@ -15,13 +16,12 @@ import javax.mail.internet.MimeMessage;
 /**
  * Created by harrison.chu on 8/6/15.
  */
+@Component
 public class NotificationService {
 
-    @Value("${notification.service.user}")
-    private String senderUsername = null;
+    private String senderUsername = "airtube.butler@gmail.com";
 
-    @Value("${notification.service.password}")
-    private String senderPassword = null;
+    private String senderPassword = "m0gultuber";
     Properties props;
 
     public NotificationService() {
@@ -51,14 +51,6 @@ public class NotificationService {
         } catch (MessagingException e) {
             System.out.println(e);
         }
-    }
-
-    public static void main(String[] args) {
-        NotificationService service = new NotificationService();
-        service.setSenderUsername("airtube.butler@gmail.com");
-        service.setSenderPassword("m0gultuber");
-
-        service.sendMessage("harrison.c.chu@gmail.com", "test", "youwin");
     }
 
     public void setSenderUsername(String senderUsername) {
