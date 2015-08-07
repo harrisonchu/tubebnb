@@ -2,6 +2,7 @@ package com.tubemogul.platform.tubebnb.dao;
 
 import com.tubemogul.platform.tubebnb.model.Listing;
 import com.tubemogul.platform.tubebnb.model.Location;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -12,6 +13,7 @@ import java.util.List;
 /**
  * Created by harrison.chu on 8/6/15.
  */
+@Component
 public class LocationsDAO {
 
     private static final String H2_DATABASE_DIRECTORY = "/mnt/airtube_api";
@@ -36,7 +38,9 @@ public class LocationsDAO {
 
         Statement createTableStatement = connection.createStatement();
         createTableStatement.execute(createTableString);
-        loadDefaultLocations();
+        try {
+            loadDefaultLocations();
+        } catch (Exception e) {};
     }
 
     public List<Location> getAllLocations() throws Exception {
