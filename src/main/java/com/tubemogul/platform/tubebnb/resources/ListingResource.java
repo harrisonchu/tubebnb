@@ -5,6 +5,8 @@ import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
 import com.tubemogul.platform.tubebnb.dao.ListingsDAO;
 import com.tubemogul.platform.tubebnb.exceptions.ErrorDisplay;
 import com.tubemogul.platform.tubebnb.model.Listing;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +25,7 @@ import java.util.List;
 @Component
 @Path("/v1/tubebnb/listings")
 public class ListingResource {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(ListingResource.class);
 
     @Autowired
     public ListingsDAO listingsDAO;
@@ -69,7 +71,8 @@ public class ListingResource {
             Listing listingResponse = listingsDAO.createListing(email, locationId, type, name, description);
 
             return Response.ok(listingResponse).build();
-        } catch (SQLException e) {
+        } catch (Exception e) {
+            LOGGER.error("Error during create ", e);
             ErrorDisplay error = new ErrorDisplay(e.getMessage(), 400);
             return Response.status(400).entity(error).build();
         }
