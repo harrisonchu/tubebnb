@@ -7,11 +7,16 @@ import com.tubemogul.devops.spring.SpringSystemContext;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import javax.servlet.DispatcherType;
+import javax.servlet.FilterRegistration;
+import java.util.EnumSet;
 
 /**
  * Created by kevin.lee on 8/6/15.
@@ -46,6 +51,14 @@ public class TubeBnbServer extends Application<TubeBnbServerConfiguration> {
         logger.info("Initializing...");
 
 //        environment.jersey().register(new TmParameterExceptionMapper());
+        FilterRegistration.Dynamic filter = environment.servlets().addFilter("CORS", CrossOriginFilter.class);
+        filter.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
+        filter.setInitParameter("allowedOrigins", "*");
+        filter.setInitParameter("allowedHeaders",
+                "Content-Type,Authorization,X-Requested-With,Content-Length,Accept,Origin");
+        filter.setInitParameter("allowedMethods", "GET,PUT,POST,OPTIONS");
+        filter.setInitParameter("preflightMaxAge", "5184000"); // 2 months
+        filter.setInitParameter("allowCredentials", "true");
         environment.getObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
     }
 
