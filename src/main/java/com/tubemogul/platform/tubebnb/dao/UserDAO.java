@@ -1,8 +1,10 @@
 package com.tubemogul.platform.tubebnb.dao;
 
+import com.tubemogul.platform.tubebnb.config.HerokuDataSource;
 import com.tubemogul.platform.tubebnb.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -34,11 +36,15 @@ public class UserDAO {
 
     private Connection connection;
 
+    @Autowired
+    private HerokuDataSource herokuDataSource;
+
     @PostConstruct
     public void initialize() throws Exception {
         LOGGER.debug("Initializing User Database...");
-        String h2Database = "jdbc:h2:" + H2_DATABASE_DIRECTORY + USER_TABLE;
-        connection = DriverManager.getConnection(h2Database, "test", "");
+       // String h2Database = "jdbc:h2:" + H2_DATABASE_DIRECTORY + USER_TABLE;
+        //connection = DriverManager.getConnection(h2Database, "test", "");
+        connection = herokuDataSource.dataSource().getConnection();
 
         Statement createTableStatement = connection.createStatement();
         createTableStatement.execute(createTableString);
