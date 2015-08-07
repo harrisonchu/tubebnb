@@ -17,8 +17,8 @@ import java.sql.*;
 public class UserDAO {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDAO.class);
 
-    private static final String H2_DATABASE_DIRECTORY = "/mnt/airtube-api/";
-    private static final String USER_TABLE = "users";
+    private static final String H2_DATABASE_DIRECTORY = "/mnt/airtube_api";
+//    private static final String USER_TABLE = "users";
 
     @Value("${user.dao.create.table.statement}")
     private String createTableString = null;
@@ -38,7 +38,7 @@ public class UserDAO {
     public void initialize() throws Exception {
         createDirectory();
         LOGGER.debug("Initializing User Database...");
-        String h2Database = "jdbc:h2:" + H2_DATABASE_DIRECTORY + USER_TABLE;
+        String h2Database = "jdbc:h2:" + H2_DATABASE_DIRECTORY;
         connection = DriverManager.getConnection(h2Database, "test", "");
 
         Statement createTableStatement = connection.createStatement();

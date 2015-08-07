@@ -89,3 +89,4 @@ listings.dao.create.listings.statement: INSERT INTO Listings (user_id, location,
                                             is_allow_pets, is_allow_smoking)
                                         VALUES (?, ?, ?, ?, ?,?);
 
+db.directory: /mnt/airtube_api

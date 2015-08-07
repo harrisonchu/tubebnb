@@ -25,8 +25,8 @@ server:
 
 listings.dao.create.table.statement: CREATE TABLE IF NOT EXISTS Listings
                                      (
-                                     user_id BIGINT(20),
                                      listing_id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+                                     user_id BIGINT(20),
                                      location_id BIGINT(20),
                                      is_briefcase BOOL,
                                      is_flipflops BOOL,
@@ -39,6 +39,9 @@ listings.dao.create.table.statement: CREATE TABLE IF NOT EXISTS Listings
 
 listings.dao.get.listings.statement: SELECT * FROM Listings WHERE listing_id = ?;
 
-listings.dao.create.listings.statement: INSERT INTO Listings (user_id, location, is_briefcase, is_flipflops,
-                                            is_allow_pets, is_allow_smoking)
-                                        VALUES (?, ?, ?, ?, ?,?);
+listings.dao.create.listings.statement: INSERT INTO Listings (user_id, location_id, is_briefcase, is_flipflops,
+                                            is_allow_pets, is_allow_smoking, is_420)
+                                        VALUES (?, ?, ?, ?, ?,?, ?);
+
+
+db.directory: /mnt/airtube_api

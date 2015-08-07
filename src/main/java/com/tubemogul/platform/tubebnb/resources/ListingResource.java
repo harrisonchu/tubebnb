@@ -59,15 +59,16 @@ public class ListingResource {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
     public Response postListing(@PathParam("user_id") Integer userId,
-                                @QueryParam("location") String location,
-                                @QueryParam("is_briefcase") Boolean isBriefCase,
-                                @QueryParam("is_flipflops") Boolean isFlipFlops,
-                                @QueryParam("is_allow_pets") Boolean isAllowPets,
-                                @QueryParam("is_allow_smoking") Boolean isAllowSmoking,
-                                @QueryParam("is_420") Boolean is420) {
+                                @FormParam("location_id") Integer locationId,
+                                @FormParam("is_briefcase") Boolean isBriefCase,
+                                @FormParam("is_flipflops") Boolean isFlipFlops,
+                                @FormParam("is_allow_pets") Boolean isAllowPets,
+                                @FormParam("is_allow_smoking") Boolean isAllowSmoking,
+                                @FormParam("is_420") Boolean is420) {
 
         try {
-            Listing listingResponse = listingsDAO.createListing(userId, location,isBriefCase,
+            System.out.println("LOCATION ID: " + locationId);
+            Listing listingResponse = listingsDAO.createListing(userId, locationId,isBriefCase,
                     isFlipFlops,isAllowPets,isAllowSmoking,is420);
 
             return Response.ok(listingResponse).build();

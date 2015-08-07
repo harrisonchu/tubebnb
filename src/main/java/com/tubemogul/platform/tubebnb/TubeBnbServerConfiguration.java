@@ -42,6 +42,10 @@ public class TubeBnbServerConfiguration extends Configuration {
     private String listingTableCreateListingString;
 
 
+    @JsonProperty("db.directory")
+    private String dbDirectory;
+
+
     public String getUserTableGetUserByEmail() {
         return userTableGetUserByEmail;
     }
@@ -128,5 +132,13 @@ public class TubeBnbServerConfiguration extends Configuration {
 
     public void setListingTableCreateListingString(String listingTableCreateListingString) {
         this.listingTableCreateListingString = listingTableCreateListingString;
+    }
+
+    public String getDbDirectory() {
+        return dbDirectory;
+    }
+
+    public void setDbDirectory(String dbDirectory) {
+        this.dbDirectory = dbDirectory;
     }
 }

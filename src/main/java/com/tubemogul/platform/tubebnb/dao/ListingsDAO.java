@@ -19,7 +19,7 @@ public class ListingsDAO {
     private static final Logger LOGGER = LoggerFactory.getLogger(ListingsDAO.class);
 
 
-    private static final String H2_DATABASE_DIRECTORY = "/mnt/airtube-api/";
+    private static final String H2_DATABASE_DIRECTORY = "/mnt/airtube_api";
     private static final String LISTINGS_TABLE = "listings";
 
     @Value("${listings.dao.create.table.statement}")
@@ -36,11 +36,10 @@ public class ListingsDAO {
     @PostConstruct
     public void initialize() throws Exception {
         createDirectory();
-        String h2Database = "jdbc:h2:" + H2_DATABASE_DIRECTORY + LISTINGS_TABLE;
+        String h2Database = "jdbc:h2:" + H2_DATABASE_DIRECTORY;
         connection = DriverManager.getConnection(h2Database, "test", "");
 
         Statement createTableStatement = connection.createStatement();
-        LOGGER.info("!@(@()@!(##()@!: {} ", createTableString);
         createTableStatement.execute(createTableString);
     }
 
@@ -53,13 +52,13 @@ public class ListingsDAO {
             rs = stmt.executeQuery(getListingString);
 
             int userId = rs.getInt("user_id");
-            String location = rs.getString("location");
+            int locationId = rs.getInt("location_id");
             Boolean briefcase = rs.getBoolean("is_briefcase");
             Boolean flipflops = rs.getBoolean("is_flipflops");
             Boolean allowPets = rs.getBoolean("is_allow_pets");
             Boolean allowSmoking = rs.getBoolean("is_allow_smoking");
 
-            Listing listing = new Listing(userId, listingId, location, briefcase, flipflops, allowPets, allowSmoking);
+            Listing listing = new Listing(userId, listingId, locationId, briefcase, flipflops, allowPets, allowSmoking);
             return listing;
         } catch (Exception e) {
             LOGGER.error("An exception occurred while trying to retrieve a listing");
@@ -84,7 +83,7 @@ public class ListingsDAO {
      */
 
     public Listing createListing(Integer userId,
-                                 String location,
+                                 Integer locationId,
                                  Boolean isBriefCase,
                                  Boolean isFlipFlops,
                                  Boolean isAllowPets,
@@ -97,11 +96,12 @@ public class ListingsDAO {
         try {
             stmt = connection.prepareStatement(createListingString, Statement.RETURN_GENERATED_KEYS);
             stmt.setInt(1, userId);
-            stmt.setString(2, location);
+            stmt.setInt(2, locationId);
             stmt.setBoolean(3, isBriefCase);
             stmt.setBoolean(4, isFlipFlops);
             stmt.setBoolean(5, isAllowPets);
             stmt.setBoolean(6, isAllowSmoking);
+            stmt.setBoolean(7, false);
 
             int rowsUpdated = stmt.executeUpdate();
 
@@ -115,7 +115,7 @@ public class ListingsDAO {
                 if(rs.next()) {
                     listingId = rs.getInt(1);
                 }
-                listingResponse = new Listing(userId,listingId, location, isBriefCase, isFlipFlops, isAllowPets, isAllowSmoking);
+                listingResponse = new Listing(userId,listingId, locationId, isBriefCase, isFlipFlops, isAllowPets, isAllowSmoking);
             }
             return listingResponse;
         } catch (SQLException e) {
