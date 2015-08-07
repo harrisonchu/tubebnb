@@ -51,10 +51,10 @@ public class ListingResource {
     }
 
     @POST
-    @Path("/create/{email}/")
+    @Path("/create/")
     @Produces(MediaType.APPLICATION_JSON)
     @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-    public Response postListing(@PathParam("email") String email,
+    public Response postListing(@FormParam("email") String email,
                                 @FormParam("location_id") Integer locationId,
                                 @FormParam("type") String type,
                                 @FormParam("name") String name,
