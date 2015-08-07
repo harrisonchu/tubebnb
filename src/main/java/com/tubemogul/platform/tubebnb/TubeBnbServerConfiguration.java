@@ -20,6 +20,15 @@ public class TubeBnbServerConfiguration extends Configuration {
     @JsonProperty("cors.preflightMaxAgeParam")
     private int preflightMaxAgeParam;
 
+    @JsonProperty("reservation.dao.create.table.statement")
+    private String reservationTableCreateString;
+
+    @JsonProperty("reservation.dao.get.reservation.statement")
+    private String reservationTableGetUserString;
+
+    @JsonProperty("reservation.dao.create.reservation.statement")
+    private String reservationTableCreateUserString;
+
     @JsonProperty("user.dao.create.table.statement")
     private String userTableCreateString;
 
@@ -140,5 +149,29 @@ public class TubeBnbServerConfiguration extends Configuration {
 
     public void setDbDirectory(String dbDirectory) {
         this.dbDirectory = dbDirectory;
+    }
+
+    public String getReservationTableCreateString() {
+        return reservationTableCreateString;
+    }
+
+    public void setReservationTableCreateString(String reservationTableCreateString) {
+        this.reservationTableCreateString = reservationTableCreateString;
+    }
+
+    public String getReservationTableGetUserString() {
+        return reservationTableGetUserString;
+    }
+
+    public void setReservationTableGetUserString(String reservationTableGetUserString) {
+        this.reservationTableGetUserString = reservationTableGetUserString;
+    }
+
+    public String getReservationTableCreateUserString() {
+        return reservationTableCreateUserString;
+    }
+
+    public void setReservationTableCreateUserString(String reservationTableCreateUserString) {
+        this.reservationTableCreateUserString = reservationTableCreateUserString;
     }
 }
