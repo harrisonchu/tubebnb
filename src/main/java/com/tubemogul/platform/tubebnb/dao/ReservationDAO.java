@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by kevin.lee on 8/6/15.
@@ -30,6 +32,9 @@ public class ReservationDAO {
 
     @Value("${reservation.dao.create.reservation.statement}")
     private String createReservationString = null;
+
+    @Value("${reservation.dao.get.reservation.by.user.statement}")
+    private String getReservationByUserString = null;
 
     private Connection connection;
 
@@ -63,8 +68,9 @@ public class ReservationDAO {
             String startTime = rs.getString("start_time");
             String endTime = rs.getString("end_time");
             String timezone = rs.getString("timezone");
+            String status = rs.getString("status");
 
-            Reservation reservation = new Reservation(reservationId, listingId, hostUserId, locationId, travelerUserId, startTime, endTime, timezone);
+            Reservation reservation = new Reservation(reservationId, listingId, hostUserId, locationId, travelerUserId, startTime, endTime, timezone, status);
             return reservation;
         } catch (Exception e) {
             LOGGER.error("An exception occurred while trying to retrieve a user", e);
@@ -81,10 +87,46 @@ public class ReservationDAO {
         return null;
     }
 
+    public List<Reservation> getAllReservationsForUser(long userId) {
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+        List<Reservation> reservations = new ArrayList<>();
+        try {
+            stmt = connection.prepareStatement(getReservationByUserString);
+            stmt.setLong(1, userId);
+            stmt.setLong(2, userId);
+            rs = stmt.executeQuery();
+
+            long reservationId = rs.getLong("reservation_id");
+            long listingId = rs.getLong("listing_id");
+            long hostUserId = rs.getLong("host_user_id");
+            long locationId = rs.getLong("location_id");
+            long travelerUserId = rs.getLong("traveler_user_id");
+            String startTime = rs.getString("start_time");
+            String endTime = rs.getString("end_time");
+            String timezone = rs.getString("timezone");
+            String status = rs.getString("status");
+
+            Reservation reservation = new Reservation(reservationId, listingId, hostUserId, locationId, travelerUserId, startTime, endTime, timezone, status);
+            reservations.add(reservation);
+        } catch (Exception e) {
+            LOGGER.error("An exception occurred while trying to retrieve a user", e);
+        } finally {
+            try {
+                stmt.close();
+            } catch (Exception e) {}
+            try {
+                rs.close();
+            } catch (Exception e) {}
+        }
+
+        return reservations;
+    }
+
     /**
      * @return true if creation was successful, false if not
      */
-    public boolean createReservation(long listingId, long hostUserId, long locationId, long travelerUserId, String startTime, String endTime, String status, String timezone) throws SQLException {
+    public boolean createReservation(long listingId, long hostUserId, long locationId, long travelerUserId, long startTime, long endTime, String timezone) throws SQLException {
         PreparedStatement stmt = null;
         boolean isSuccess = false;
         try {
@@ -93,9 +135,8 @@ public class ReservationDAO {
             stmt.setLong(2, hostUserId);
             stmt.setLong(3, locationId);
             stmt.setLong(4, travelerUserId);
-            stmt.setString(5, startTime);
-            stmt.setString(6, endTime);
-            stmt.setString(7, status);
+            stmt.setLong(5, startTime);
+            stmt.setLong(6, endTime);
             stmt.setString(8, timezone);
             int rowsUpdated = stmt.executeUpdate();
 
@@ -115,10 +156,6 @@ public class ReservationDAO {
         return isSuccess;
     }
 
-    private void createTableIfNotExists() {
-        String createTable = "";
-    }
-
     private void createDirectory() throws Exception {
         File f = new File(H2_DATABASE_DIRECTORY);
         if (!f.exists()) {
@@ -127,6 +164,10 @@ public class ReservationDAO {
                 throw new Exception("Error creating directory for H2 database.");
             }
         }
+    }
+
+    public void setGetReservationByUserString(String getReservationByUserString) {
+        this.getReservationByUserString = getReservationByUserString;
     }
 
     public void setGetReservationString(String getReservationString) {

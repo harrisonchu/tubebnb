@@ -31,7 +31,11 @@ public class Reservation {
     @JsonProperty("timezone")
     public String timezone;
 
-    public Reservation(long reservationId, long listingId, long hostUserId, long locationId, long travelerUserId, String startTime, String endTime, String timezone) {
+    @JsonProperty("status")
+    private String status;
+
+    public Reservation(long reservationId, long listingId, long hostUserId, long locationId, long travelerUserId, String startTime, String endTime, String timezone,
+            String status) {
         this.reservationId = reservationId;
         this.listingId = listingId;
         this.hostUserId = hostUserId;
@@ -40,8 +44,12 @@ public class Reservation {
         this.startTime = startTime;
         this.endTime = endTime;
         this.timezone = timezone;
+        this.status = status;
     }
 
+    public String getStatus() {
+        return status;
+    }
 
     public long getReservationId() {
         return reservationId;

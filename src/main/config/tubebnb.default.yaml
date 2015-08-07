@@ -63,13 +63,13 @@ reservation.dao.create.table.statement: CREATE TABLE IF NOT EXISTS Reservations
                                         listing_id INTEGER,
                                         host_user_id INTEGER,
                                         location_id INTEGER,
-                                        traveler_user_id, INTEGER,
-                                        start_time TIMESTAMP,
-                                        end_time TIMESTAMP,
-                                        status ENUM('complet    ed','pending','canceled'),
+                                        traveler_user_id INTEGER,
+                                        start_time BIGINT,
+                                        end_time BIGINT,
+                                        status VARCHAR(50) DEFAULT 'pending',
                                         timezone VARCHAR(255)
-                                        FOREIGN KEY (host_user_id) REFERENCES Users(user_id),
-                                        FOREIGN KEY (traveler_user_id) REFERENCES Users(user_id);
+                                        PRIMARY KEY(reservation_id)
+                                        );
 
 listings.dao.create.table.statement: CREATE TABLE Listings
                                      (
@@ -95,4 +95,5 @@ listings.dao.create.listings.statement: INSERT INTO Listings (user_id, location,
 db.directory: /mnt/airtube_api
 
 reservation.dao.get.reservation.statement: SELECT * FROM Reservations WHERE reservation_id = ?;
-reservation.dao.create.reservation.statement: INSERT INTO Reservations (listing_id, host_user_id, location_id, traveler_user_id, start_time, end_time, status, timezone) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+reservation.dao.get.reservation.by.user.statement: SELECT * FROM Reservations WHERE host_user_id = ? OR traveler_user_id = ?;
+reservation.dao.create.reservation.statement: INSERT INTO Reservations (listing_id, host_user_id, location_id, traveler_user_id, start_time, end_time, timezone) VALUES (?, ?, ?, ?, ?, ?, ?);

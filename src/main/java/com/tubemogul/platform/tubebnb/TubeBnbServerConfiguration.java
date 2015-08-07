@@ -56,6 +56,17 @@ public class TubeBnbServerConfiguration extends Configuration {
     @JsonProperty("notification.service.password")
     private String notificationServicePassword;
 
+    @JsonProperty("reservation.dao.get.reservation.by.user.statement")
+    private String reservationTableGetByUserString;
+
+    public String getReservationTableGetByUserString() {
+        return reservationTableGetByUserString;
+    }
+
+    public void setReservationTableGetByUserString(String reservationTableGetByUserString) {
+        this.reservationTableGetByUserString = reservationTableGetByUserString;
+    }
+
     public String getNotificationServiceUsername() {
         return notificationServiceUsername;
     }
