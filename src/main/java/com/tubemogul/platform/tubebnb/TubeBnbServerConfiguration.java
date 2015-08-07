@@ -32,6 +32,16 @@ public class TubeBnbServerConfiguration extends Configuration {
     @JsonProperty("user.dao.get.user.by.email")
     private String userTableGetUserByEmail;
 
+    @JsonProperty("listings.dao.create.table.statement")
+    private String listingTableCreateString;
+
+    @JsonProperty("listings.dao.get.listings.statement")
+    private String listingTableGetString;
+
+    @JsonProperty("listings.dao.create.listings.statement")
+    private String listingTableCreateListingString;
+
+
     public String getUserTableGetUserByEmail() {
         return userTableGetUserByEmail;
     }
@@ -96,4 +106,27 @@ public class TubeBnbServerConfiguration extends Configuration {
         this.preflightMaxAgeParam = preflightMaxAgeParam;
     }
 
+    public String getListingTableCreateString() {
+        return listingTableCreateString;
+    }
+
+    public void setListingTableCreateString(String listingTableCreateString) {
+        this.listingTableCreateString = listingTableCreateString;
+    }
+
+    public String getListingTableGetString() {
+        return listingTableGetString;
+    }
+
+    public void setListingTableGetString(String listingTableGetString) {
+        this.listingTableGetString = listingTableGetString;
+    }
+
+    public String getListingTableCreateListingString() {
+        return listingTableCreateListingString;
+    }
+
+    public void setListingTableCreateListingString(String listingTableCreateListingString) {
+        this.listingTableCreateListingString = listingTableCreateListingString;
+    }
 }

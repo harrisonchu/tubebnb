@@ -36,6 +36,7 @@ public class UserDAO {
 
     @PostConstruct
     public void initialize() throws Exception {
+        createDirectory();
         LOGGER.debug("Initializing User Database...");
         String h2Database = "jdbc:h2:" + H2_DATABASE_DIRECTORY + USER_TABLE;
         connection = DriverManager.getConnection(h2Database, "test", "");

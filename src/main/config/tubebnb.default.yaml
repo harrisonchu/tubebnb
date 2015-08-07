@@ -66,4 +66,26 @@ reservation.dao.create.table.statement: CREATE TABLE Reservations
                                         status ENUM('completed','pending','canceled'),
                                         timezone VARCHAR(255)
                                         FOREIGN KEY (host_user_id) REFERENCES Users(user_id),
-                                        FOREIGN KEY (traveler_user_id) REFERENCES Users(user_id)
+                                        FOREIGN KEY (traveler_user_id) REFERENCES Users(user_id);
+
+listings.dao.create.table.statement: CREATE TABLE Listings
+                                     (
+                                     user_id BIGINT(20),
+                                     listing_id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+                                     location_id BIGINT(20),
+                                     is_briefcase BOOL,
+                                     is_flipflops BOOL,
+                                     is_allow_pets BOOL,
+                                     is_allow_smoking BOOL,
+                                     is_420 BOOL,
+                                     PRIMARY KEY(listing_id),
+                                     FOREIGN KEY (user_id) REFERENCES Users(user_Id)
+                                     );
+
+
+listings.dao.get.listings.statement: SELECT * FROM Listings WHERE listing_id = ?;
+
+listings.dao.create.listings.statement: INSERT INTO Listings (user_id, location, is_briefcase, is_flipflops,
+                                            is_allow_pets, is_allow_smoking)
+                                        VALUES (?, ?, ?, ?, ?,?);
+

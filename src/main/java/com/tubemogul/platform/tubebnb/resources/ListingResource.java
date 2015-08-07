@@ -2,38 +2,80 @@ package com.tubemogul.platform.tubebnb.resources;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
-import com.tubemogul.platform.tubebnb.response.ListingItem;
-import com.tubemogul.platform.tubebnb.response.ReservationItem;
+import com.tubemogul.platform.tubebnb.dao.ListingsDAO;
+import com.tubemogul.platform.tubebnb.model.Listing;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.sql.SQLException;
 
 /**
  * Created by kamel.dabwan on 8/6/15.
  */
 
 @Component
-@Path("/listings")
+@Path("/v1/tubebnb/listings")
 public class ListingResource {
+
+
+    @Autowired
+    public ListingsDAO listingsDAO;
 
     @GET
     @Path("/{listing_id}")
     @Produces(MediaType.APPLICATION_JSON)
     @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
     public Response getSingleDataRateCard(@Context UriInfo uri,
-                                          @PathParam("listing_id") Long listingId) {
+                                          @PathParam("listing_id") int listingId) {
+
+        Listing listingResponse = listingsDAO.getListing(listingId);
+        return Response.ok(listingResponse).build();
+
+    }
 
 
-        ListingItem listingItem = new ListingItem();
-        listingItem.setListingId(listingId);
-        return Response.ok(listingItem).build();
+    @GET
+    @Path("/")
+    @Produces(MediaType.APPLICATION_JSON)
+    @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+    public Response getAllListings(@Context UriInfo uri,
+                                   @QueryParam("location_id") Long locationId,
+                                   @QueryParam("is_briefcase") Boolean isBriefCase,
+                                   @QueryParam("is_flipflops") Boolean isFlipFlops,
+                                   @QueryParam("is_allow_pets") Boolean isAllowPets,
+                                   @QueryParam("is_allow_smoking") Boolean isAllowSmoking,
+                                   @QueryParam("is_420") Boolean is420) {
+
+        return null;
+    }
+
+    @POST
+    @Path("/{user_id}/listings/")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+    public Response postListing(@PathParam("user_id") Integer userId,
+                                @QueryParam("location") String location,
+                                @QueryParam("is_briefcase") Boolean isBriefCase,
+                                @QueryParam("is_flipflops") Boolean isFlipFlops,
+                                @QueryParam("is_allow_pets") Boolean isAllowPets,
+                                @QueryParam("is_allow_smoking") Boolean isAllowSmoking,
+                                @QueryParam("is_420") Boolean is420) {
+
+        try {
+            Listing listingResponse = listingsDAO.createListing(userId, location,isBriefCase,
+                    isFlipFlops,isAllowPets,isAllowSmoking,is420);
+
+            return Response.ok(listingResponse).build();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
 
     }
 }

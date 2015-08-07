@@ -5,8 +5,6 @@ import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
 import com.tubemogul.platform.tubebnb.dao.UserDAO;
 import com.tubemogul.platform.tubebnb.exceptions.ErrorDisplay;
 import com.tubemogul.platform.tubebnb.model.User;
-import com.tubemogul.platform.tubebnb.response.ReservationItem;
-import com.tubemogul.platform.tubebnb.response.UserItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
