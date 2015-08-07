@@ -79,7 +79,8 @@ listings.dao.create.table.statement: CREATE TABLE IF NOT EXISTS Listings
                                      location_id BIGINT(20),
                                      description VARCHAR(100),
                                      type VARCHAR(100),
-                                     PRIMARY KEY(listing_id)
+                                     PRIMARY KEY(listing_id),
+                                     UNIQUE (email)
                                      );
 
 listings.dao.get.listings.statement: SELECT * FROM Listings WHERE email = ?;
