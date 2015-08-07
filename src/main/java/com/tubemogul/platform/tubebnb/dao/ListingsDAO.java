@@ -35,6 +35,9 @@ public class ListingsDAO {
     @Value("${listings.dao.get.all.listings}")
     private String getAllListingString = null;
 
+    @Value("${listing.dao.delete.listing}")
+    private String deleteListingString = null;
+
     private Connection connection;
 
     @PostConstruct
@@ -45,6 +48,22 @@ public class ListingsDAO {
 
         Statement createTableStatement = connection.createStatement();
         createTableStatement.execute(createTableString);
+    }
+
+    public void deleteListingById(int listingId) throws Exception {
+        PreparedStatement stmt = null;
+        try {
+            stmt = connection.prepareStatement(deleteListingString);
+            stmt.setInt(1, listingId);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOGGER.error("An exception occurred while trying to retrieve a listing");
+        } finally {
+            try {
+                stmt.close();
+            } catch (Exception e) {}
+        }
     }
 
     public List<Listing> getAllListings() {
@@ -162,6 +181,10 @@ public class ListingsDAO {
                 throw new Exception("Error creating directory for H2 database.");
             }
         }
+    }
+
+    public void setDeleteListingString(String deleteListingString) {
+        this.deleteListingString = deleteListingString;
     }
 
     public void setCreateTableString(String createTableString) {

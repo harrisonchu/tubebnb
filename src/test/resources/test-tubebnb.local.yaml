@@ -26,21 +26,23 @@ server:
 
 listings.dao.create.table.statement: CREATE TABLE IF NOT EXISTS Listings
                                      (
-                                     listing_id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-                                     user_id BIGINT(20),
+                                     listing_id BIGINT(20) AUTO_INCREMENT,
+                                     email VARCHAR(100),
+                                     name VARCHAR(100),
                                      location_id BIGINT(20),
-                                     is_briefcase BOOL,
-                                     is_flipflops BOOL,
-                                     is_420 BOOL,
+                                     description VARCHAR(100),
+                                     type VARCHAR(100),
                                      PRIMARY KEY(listing_id)
                                      );
 
+listings.dao.get.listings.statement: SELECT * FROM Listings WHERE email = ?;
 
-listings.dao.get.listings.statement: SELECT * FROM Listings WHERE listing_id = ?;
-
-listings.dao.create.listings.statement: INSERT INTO Listings (user_id, location_id, is_briefcase, is_flipflops, is_420)
+listings.dao.create.listings.statement: INSERT INTO Listings (email, location_id, type, name, description)
                                         VALUES (?, ?, ?, ?, ?);
 
+listings.dao.get.all.listings: SELECT * FROM Listings;
+
+listing.dao.delete.listing: DELETE FROM Listings WHERE listing_id = ?
 
 db.directory: /mnt/airtube_api
 

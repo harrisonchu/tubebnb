@@ -71,14 +71,14 @@ reservation.dao.create.table.statement: CREATE TABLE IF NOT EXISTS Reservations
                                         PRIMARY KEY(reservation_id)
                                         );
 
-listings.dao.create.table.statement: CREATE TABLE Listings
+listings.dao.create.table.statement: CREATE TABLE IF NOT EXISTS Listings
                                      (
-                                     listing_id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+                                     listing_id BIGINT(20) AUTO_INCREMENT,
                                      email VARCHAR(100),
                                      name VARCHAR(100),
                                      location_id BIGINT(20),
                                      description VARCHAR(100),
-                                     type VARCHAR(100)
+                                     type VARCHAR(100),
                                      PRIMARY KEY(listing_id)
                                      );
 
@@ -88,6 +88,8 @@ listings.dao.create.listings.statement: INSERT INTO Listings (email, location_id
                                         VALUES (?, ?, ?, ?, ?);
 
 listings.dao.get.all.listings: SELECT * FROM Listings;
+
+listing.dao.delete.listing: DELETE FROM Listings WHERE listing_id = ?
 
 db.directory: /mnt/airtube_api
 

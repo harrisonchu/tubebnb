@@ -62,6 +62,9 @@ public class TubeBnbServerConfiguration extends Configuration {
     @JsonProperty("listings.dao.get.all.listings")
     private String getAllListingString;
 
+    @JsonProperty("listing.dao.delete.listing")
+    private String deleteListingString;
+
     public String getGetAllListingString() {
         return getAllListingString;
     }

@@ -70,8 +70,24 @@ public class ListingResource {
 
             return Response.ok(listingResponse).build();
         } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+            ErrorDisplay error = new ErrorDisplay(e.getMessage(), 400);
+            return Response.status(400).entity(error).build();
+        }
+
+    }
+
+    @POST
+    @Path("/delete/")
+    @Produces(MediaType.APPLICATION_JSON)
+    @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+    public Response deleteListing(@FormParam("listing_id") int listingId) {
+
+        try {
+            listingsDAO.deleteListingById(listingId);
+            return Response.ok().build();
+        } catch (Exception e) {
+            ErrorDisplay error = new ErrorDisplay(e.getMessage(), 400);
+            return Response.status(400).entity(error).build();
         }
 
     }
