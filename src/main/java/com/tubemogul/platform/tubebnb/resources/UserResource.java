@@ -39,7 +39,7 @@ public class UserResource {
 
         User user = userDAO.getUser(userId);
         if (user == null){
-            ErrorDisplay err = new ErrorDisplay("Failed to create user", 400);
+            ErrorDisplay err = new ErrorDisplay("Failed to retrieve user", 400);
             return Response.status(400).entity(err).build();
         }
 
@@ -49,7 +49,7 @@ public class UserResource {
 
     @POST
     @Path("/")
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
     public Response createUser(@Context UriInfo uri,
                                @FormParam("name") String name,
@@ -59,10 +59,12 @@ public class UserResource {
                                @FormParam("notify_on_reservation") boolean notifyOnReservation){
 
         boolean success = userDAO.createUser(name,email,office,phoneNumber,notifyOnReservation);
-        if (success){
-            return Response.ok("User was created successfully").build();
+        if (!success){
+            ErrorDisplay err = new ErrorDisplay("Failed to create user", 400);
+            return Response.status(400).entity(err).build();
         }
-        return Response.status(400).entity("Failed to create user").build();
+        User user= userDAO.getUser(email);
+        return Response.ok(user).build();
 
     }
 
