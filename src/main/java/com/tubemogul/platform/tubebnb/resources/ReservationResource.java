@@ -48,7 +48,6 @@ public class ReservationResource {
                                       @FormParam("traveler_user_id") Long travelerUserId,
                                       @FormParam("start_time") Long startTime,
                                       @FormParam("end_time") Long endTime,
-                                      @FormParam("status") String status,
                                       @FormParam("timezone") String timezone) {
 
         try {

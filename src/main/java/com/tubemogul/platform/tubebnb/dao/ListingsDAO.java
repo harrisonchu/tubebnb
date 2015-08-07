@@ -23,20 +23,23 @@ public class ListingsDAO {
 
     private static final String H2_DATABASE_DIRECTORY = "/mnt/airtube_api";
 
-    @Value("${listings.dao.create.table.statement}")
-    private String createTableString = null;
+    private String createTableString = "CREATE TABLE IF NOT EXISTS Listings " +
+            "(listing_id BIGINT(20) AUTO_INCREMENT, " +
+    "email VARCHAR(100), " +
+    "name VARCHAR(100), " +
+    "location_id BIGINT(20), " +
+    "description VARCHAR(100), " +
+    "type VARCHAR(100), " +
+    "PRIMARY KEY(listing_id), " +
+    "UNIQUE (email) );";
 
-    @Value("${listings.dao.get.listings.statement}")
-    private String getListingString = null;
+    private String getListingString = "SELECT * FROM Listings WHERE email = ?;";
 
-    @Value("${listings.dao.create.listings.statement}")
-    private String createListingString = null;
+    private String createListingString = "INSERT INTO Listings (email, location_id, type, name, description) VALUES (?, ?, ?, ?, ?);";
 
-    @Value("${listings.dao.get.all.listings}")
-    private String getAllListingString = null;
+    private String getAllListingString = "SELECT * FROM Listings;";
 
-    @Value("${listing.dao.delete.listing}")
-    private String deleteListingString = null;
+    private String deleteListingString = "DELETE FROM Listings WHERE listing_id = ?";
 
     private Connection connection;
 
