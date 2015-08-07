@@ -48,8 +48,9 @@ public class ListingsDAO {
         PreparedStatement stmt = null;
         try {
             stmt = connection.prepareStatement(getListingString);
-            stmt.setInt(1, listingId);
-            rs = stmt.executeQuery(getListingString);
+            stmt.setInt(1,listingId);
+            rs = stmt.executeQuery();
+            rs.next();
 
             int userId = rs.getInt("user_id");
             int locationId = rs.getInt("location_id");
@@ -61,6 +62,7 @@ public class ListingsDAO {
             Listing listing = new Listing(userId, listingId, locationId, briefcase, flipflops, allowPets, allowSmoking);
             return listing;
         } catch (Exception e) {
+            e.printStackTrace();
             LOGGER.error("An exception occurred while trying to retrieve a listing");
         } finally {
             try {

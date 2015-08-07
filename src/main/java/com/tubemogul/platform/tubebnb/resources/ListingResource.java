@@ -56,7 +56,7 @@ public class ListingResource {
 
     @POST
     @Path("/{user_id}/listings/")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.APPLICATION_JSON)
     @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
     public Response postListing(@PathParam("user_id") Integer userId,
                                 @FormParam("location_id") Integer locationId,
