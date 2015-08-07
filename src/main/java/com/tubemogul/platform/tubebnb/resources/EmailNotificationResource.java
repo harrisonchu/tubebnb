@@ -56,6 +56,9 @@ public class EmailNotificationResource {
             }
 
             notificationService.sendMessage(email, "You have a new request to stay at your sweet pad from AirTube!", description);
+
+            notificationService.sendMessage(travelerEmail, "Your request to stay at a moguler's sweet pad", "Below is a copy "
+                    + "of your original message \n\n\n " + description);
             return Response.ok().build();
         } catch (Exception e) {
             ErrorDisplay error = new ErrorDisplay(e.getMessage(), 400);
