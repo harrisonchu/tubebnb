@@ -60,7 +60,8 @@ public class ListingResource {
                                 @FormParam("location_id") Integer locationId,
                                 @FormParam("type") String type,
                                 @FormParam("name") String name,
-                                @FormParam("description") String description) {
+                                @FormParam("description") String description,
+                                @FormParam("image_link") String imageLink) {
 
         try {
             if (!("business".equals(type) || "leisure".equals(type) || "both".equals(type))) {
@@ -68,7 +69,7 @@ public class ListingResource {
                 return Response.status(400).entity(error).build();
             }
 
-            Listing listingResponse = listingsDAO.createListing(email, locationId, type, name, description);
+            Listing listingResponse = listingsDAO.createListing(email, locationId, type, name, description, imageLink);
 
             return Response.ok(listingResponse).build();
         } catch (Exception e) {

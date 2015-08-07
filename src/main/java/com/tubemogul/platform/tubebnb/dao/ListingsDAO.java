@@ -28,14 +28,14 @@ public class ListingsDAO {
     "email VARCHAR(100), " +
     "name VARCHAR(100), " +
     "location_id BIGINT(20), " +
-    "description VARCHAR(100), " +
+    "description VARCHAR(2000), image_link VARCHAR(500), " +
     "type VARCHAR(100), " +
     "PRIMARY KEY(listing_id), " +
     "UNIQUE (email) );";
 
     private String getListingString = "SELECT * FROM Listings WHERE email = ?;";
 
-    private String createListingString = "INSERT INTO Listings (email, location_id, type, name, description) VALUES (?, ?, ?, ?, ?);";
+    private String createListingString = "INSERT INTO Listings (email, location_id, type, name, description, image_link) VALUES (?, ?, ?, ?, ?, ?);";
 
     private String getAllListingString = "SELECT * FROM Listings;";
 
@@ -83,7 +83,8 @@ public class ListingsDAO {
                 String description = rs.getString("description");
                 int listingId = rs.getInt("listing_id");
                 String email = rs.getString("email");
-                Listing listing = new Listing(type, locationId, email, listingId, name, description);
+                String imageLink = rs.getString("image_link");
+                Listing listing = new Listing(type, locationId, email, listingId, name, description, imageLink);
                 listings.add(listing);
             }
         } catch (Exception e) {
@@ -115,7 +116,8 @@ public class ListingsDAO {
             String name = rs.getString("name");
             String description = rs.getString("description");
             int listingId = rs.getInt("listing_id");
-            return new Listing(type, locationId, email, listingId, name, description);
+            String imageLink = rs.getString("image_link");
+            return new Listing(type, locationId, email, listingId, name, description, imageLink);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error("An exception occurred while trying to retrieve a listing");
@@ -136,7 +138,9 @@ public class ListingsDAO {
                                  Integer locationId,
                                  String type,
                                  String name,
-                                 String description) throws SQLException {
+                                 String description,
+                                 String imageLink
+                                    ) throws SQLException {
         Listing listingResponse = null;
         boolean isSuccess;
         ResultSet rs = null;
@@ -148,6 +152,7 @@ public class ListingsDAO {
             stmt.setString(3, type);
             stmt.setString(4, name);
             stmt.setString(5, description);
+            stmt.setString(6, imageLink);
 
             int rowsUpdated = stmt.executeUpdate();
 
@@ -160,7 +165,7 @@ public class ListingsDAO {
                 if(rs.next()) {
                     listingId = rs.getInt(1);
                 }
-                listingResponse = new Listing(type, locationId, email, listingId, name, description);
+                listingResponse = new Listing(type, locationId, email, listingId, name, description, imageLink);
             }
             return listingResponse;
         } catch (SQLException e) {

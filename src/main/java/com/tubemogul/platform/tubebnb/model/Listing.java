@@ -11,14 +11,20 @@ public class Listing {
     private final String type;
     private final String name;
     private final String description;
+    private final String imageLink;
 
-    public Listing(String type, int locationId, String email, int listingId, String name, String description) {
+    public Listing(String type, int locationId, String email, int listingId, String name, String description, String imageLink) {
         this.type = type;
         this.locationId = locationId;
         this.email = email;
         this.listingId = listingId;
         this.name = name;
         this.description = description;
+        this.imageLink = imageLink;
+    }
+
+    public String getImageLink() {
+        return imageLink;
     }
 
     public String getName() {
