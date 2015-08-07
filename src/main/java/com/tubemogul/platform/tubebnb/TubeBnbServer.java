@@ -13,8 +13,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import java.util.Arrays;
-
 /**
  * Created by kevin.lee on 8/6/15.
  */
@@ -50,6 +48,8 @@ public class TubeBnbServer extends Application<TubeBnbServerConfiguration> {
 //        environment.jersey().register(new TmParameterExceptionMapper());
         environment.getObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
     }
+
+
 
     private ConfigurableApplicationContext applicationContext() throws BeansException {
         SpringSystemContext sctx = getSystemContext();

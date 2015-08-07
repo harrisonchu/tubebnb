@@ -18,7 +18,30 @@ logging:
 server:
     applicationConnectors:
     - type: http
-      port: 8080
+      port: 8083
     adminConnectors:
     - type: http
-      port: 8081
+
+
+listings.dao.create.table.statement: CREATE TABLE IF NOT EXISTS Listings
+                                     (
+                                     listing_id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+                                     user_id BIGINT(20),
+                                     location_id BIGINT(20),
+                                     is_briefcase BOOL,
+                                     is_flipflops BOOL,
+                                     is_allow_pets BOOL,
+                                     is_allow_smoking BOOL,
+                                     is_420 BOOL,
+                                     PRIMARY KEY(listing_id)
+                                     );
+
+
+listings.dao.get.listings.statement: SELECT * FROM Listings WHERE listing_id = ?;
+
+listings.dao.create.listings.statement: INSERT INTO Listings (user_id, location_id, is_briefcase, is_flipflops,
+                                            is_allow_pets, is_allow_smoking, is_420)
+                                        VALUES (?, ?, ?, ?, ?,?, ?);
+
+
+db.directory: /mnt/airtube_api

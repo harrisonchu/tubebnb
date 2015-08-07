@@ -7,17 +7,17 @@ public class Listing {
 
     private final int userId;
     private final int listingId;
-    private final String location;
+    private final int locationId;
     private final boolean briefcase;
     private final boolean flipflops;
     private final boolean allowPets;
     private final boolean allowSmoking;
 
-    public Listing(int userId, int listingId, String location, boolean briefcase, boolean flipflops, boolean allowPets,
+    public Listing(int userId, int listingId, int locationId, boolean briefcase, boolean flipflops, boolean allowPets,
             boolean allowSmoking) {
         this.userId = userId;
         this.listingId = listingId;
-        this.location = location;
+        this.locationId = locationId;
         this.briefcase = briefcase;
         this.flipflops = flipflops;
         this.allowPets = allowPets;
@@ -32,8 +32,8 @@ public class Listing {
         return listingId;
     }
 
-    public String getLocation() {
-        return location;
+    public int getLocationId() {
+        return locationId;
     }
 
     public boolean isBriefcase() {
