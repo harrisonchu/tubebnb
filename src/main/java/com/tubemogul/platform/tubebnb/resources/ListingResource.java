@@ -62,14 +62,12 @@ public class ListingResource {
                                 @FormParam("location_id") Integer locationId,
                                 @FormParam("is_briefcase") Boolean isBriefCase,
                                 @FormParam("is_flipflops") Boolean isFlipFlops,
-                                @FormParam("is_allow_pets") Boolean isAllowPets,
-                                @FormParam("is_allow_smoking") Boolean isAllowSmoking,
                                 @FormParam("is_420") Boolean is420) {
 
         try {
             System.out.println("LOCATION ID: " + locationId);
             Listing listingResponse = listingsDAO.createListing(userId, locationId,isBriefCase,
-                    isFlipFlops,isAllowPets,isAllowSmoking,is420);
+                    isFlipFlops,is420);
 
             return Response.ok(listingResponse).build();
 

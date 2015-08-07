@@ -56,10 +56,8 @@ public class ListingsDAO {
             int locationId = rs.getInt("location_id");
             Boolean briefcase = rs.getBoolean("is_briefcase");
             Boolean flipflops = rs.getBoolean("is_flipflops");
-            Boolean allowPets = rs.getBoolean("is_allow_pets");
-            Boolean allowSmoking = rs.getBoolean("is_allow_smoking");
 
-            Listing listing = new Listing(userId, listingId, locationId, briefcase, flipflops, allowPets, allowSmoking);
+            Listing listing = new Listing(userId, listingId, locationId, briefcase, flipflops);
             return listing;
         } catch (Exception e) {
             e.printStackTrace();
@@ -88,8 +86,6 @@ public class ListingsDAO {
                                  Integer locationId,
                                  Boolean isBriefCase,
                                  Boolean isFlipFlops,
-                                 Boolean isAllowPets,
-                                 Boolean isAllowSmoking,
                                  Boolean is420) throws SQLException {
         Listing listingResponse = null;
         boolean isSuccess;
@@ -101,9 +97,7 @@ public class ListingsDAO {
             stmt.setInt(2, locationId);
             stmt.setBoolean(3, isBriefCase);
             stmt.setBoolean(4, isFlipFlops);
-            stmt.setBoolean(5, isAllowPets);
-            stmt.setBoolean(6, isAllowSmoking);
-            stmt.setBoolean(7, false);
+            stmt.setBoolean(5, false);
 
             int rowsUpdated = stmt.executeUpdate();
 
@@ -117,7 +111,7 @@ public class ListingsDAO {
                 if(rs.next()) {
                     listingId = rs.getInt(1);
                 }
-                listingResponse = new Listing(userId,listingId, locationId, isBriefCase, isFlipFlops, isAllowPets, isAllowSmoking);
+                listingResponse = new Listing(userId,listingId, locationId, isBriefCase, isFlipFlops);
             }
             return listingResponse;
         } catch (SQLException e) {

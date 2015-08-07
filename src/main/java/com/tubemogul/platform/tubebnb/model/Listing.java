@@ -10,18 +10,13 @@ public class Listing {
     private final int locationId;
     private final boolean briefcase;
     private final boolean flipflops;
-    private final boolean allowPets;
-    private final boolean allowSmoking;
 
-    public Listing(int userId, int listingId, int locationId, boolean briefcase, boolean flipflops, boolean allowPets,
-            boolean allowSmoking) {
+    public Listing(int userId, int listingId, int locationId, boolean briefcase, boolean flipflops) {
         this.userId = userId;
         this.listingId = listingId;
         this.locationId = locationId;
         this.briefcase = briefcase;
         this.flipflops = flipflops;
-        this.allowPets = allowPets;
-        this.allowSmoking = allowSmoking;
     }
 
     public int getUserId() {
@@ -42,13 +37,5 @@ public class Listing {
 
     public boolean isFlipflops() {
         return flipflops;
-    }
-
-    public boolean isAllowPets() {
-        return allowPets;
-    }
-
-    public boolean isAllowSmoking() {
-        return allowSmoking;
     }
 }
