@@ -92,9 +92,7 @@ listings.dao.create.listings.statement: INSERT INTO Listings (user_id, location,
                                             is_allow_pets, is_allow_smoking)
                                         VALUES (?, ?, ?, ?, ?,?);
 
-<<<<<<< HEAD
 db.directory: /mnt/airtube_api
-=======
+
 reservation.dao.get.reservation.statement: SELECT * FROM Reservations WHERE reservation_id = ?;
 reservation.dao.create.reservation.statement: INSERT INTO Reservations (listing_id, host_user_id, location_id, traveler_user_id, start_time, end_time, status, timezone) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
->>>>>>> reservation dao and resources
