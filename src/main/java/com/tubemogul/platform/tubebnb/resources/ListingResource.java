@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by kamel.dabwan on 8/6/15.
@@ -28,40 +29,36 @@ public class ListingResource {
     public ListingsDAO listingsDAO;
 
     @GET
-    @Path("/{listing_id}")
+    @Path("/get/{email}/")
     @Produces(MediaType.APPLICATION_JSON)
     @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
     public Response getSingleDataRateCard(@Context UriInfo uri,
-                                          @PathParam("listing_id") int listingId) {
+                                          @PathParam("email") String email) {
 
-        Listing listingResponse = listingsDAO.getListing(listingId);
-        return Response.ok(listingResponse).build();
+        Listing listing = listingsDAO.getListingByEmail(email);
+        return Response.ok(listing).build();
 
     }
 
 
     @GET
-    @Path("/")
+    @Path("/get_all/")
     @Produces(MediaType.APPLICATION_JSON)
     @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
-    public Response getAllListings(@Context UriInfo uri,
-                                   @QueryParam("location_id") Long locationId,
-                                   @QueryParam("is_briefcase") Boolean isBriefCase,
-                                   @QueryParam("is_flipflops") Boolean isFlipFlops,
-                                   @QueryParam("is_allow_pets") Boolean isAllowPets,
-                                   @QueryParam("is_allow_smoking") Boolean isAllowSmoking,
-                                   @QueryParam("is_420") Boolean is420) {
-
-        return null;
+    public Response getAllListings() {
+        List<Listing> listings = listingsDAO.getAllListings();
+        return Response.ok(listings).build();
     }
 
     @POST
-    @Path("/post/{email}/")
+    @Path("/create/{email}/")
     @Produces(MediaType.APPLICATION_JSON)
     @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
     public Response postListing(@PathParam("email") String email,
                                 @FormParam("location_id") Integer locationId,
-                                @FormParam("type") String type) {
+                                @FormParam("type") String type,
+                                @FormParam("name") String name,
+                                @FormParam("description") String description) {
 
         try {
             if (!("business".equals(type) || "leisure".equals(type))) {
@@ -69,7 +66,7 @@ public class ListingResource {
                 return Response.status(400).entity(error).build();
             }
 
-            Listing listingResponse = listingsDAO.createListing(email, locationId, type);
+            Listing listingResponse = listingsDAO.createListing(email, locationId, type, name, description);
 
             return Response.ok(listingResponse).build();
         } catch (SQLException e) {
