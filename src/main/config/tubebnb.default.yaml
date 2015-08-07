@@ -75,15 +75,17 @@ listings.dao.create.table.statement: CREATE TABLE Listings
                                      (
                                      listing_id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
                                      email VARCHAR(100),
+                                     name VARCHAR(100),
                                      location_id BIGINT(20),
+                                     description VARCHAR(100),
                                      type VARCHAR(100)
                                      PRIMARY KEY(listing_id)
                                      );
 
 listings.dao.get.listings.statement: SELECT * FROM Listings WHERE email = ?;
 
-listings.dao.create.listings.statement: INSERT INTO Listings (email, location_id, type)
-                                        VALUES (?, ?, ?);
+listings.dao.create.listings.statement: INSERT INTO Listings (email, location_id, type, name, description)
+                                        VALUES (?, ?, ?, ?, ?);
 
 listings.dao.get.all.listings: SELECT * FROM Listings;
 
