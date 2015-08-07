@@ -46,13 +46,13 @@ public class ReservationResource {
                                       @FormParam("host_user_id") Long hostUserId,
                                       @FormParam("location_id") Long locationId,
                                       @FormParam("traveler_user_id") Long travelerUserId,
-                                      @FormParam("start_time") String startTime,
-                                      @FormParam("end_time") String endTime,
+                                      @FormParam("start_time") Long startTime,
+                                      @FormParam("end_time") Long endTime,
                                       @FormParam("status") String status,
                                       @FormParam("timezone") String timezone) {
 
         try {
-            reservationDAO.createReservation(listingId, hostUserId, locationId, travelerUserId, startTime, endTime, status, timezone);
+            reservationDAO.createReservation(listingId, hostUserId, locationId, travelerUserId, startTime, endTime, timezone);
         } catch (SQLException e) {
             e.printStackTrace();
         }
