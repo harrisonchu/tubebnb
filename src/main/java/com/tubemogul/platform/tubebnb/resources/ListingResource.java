@@ -61,7 +61,7 @@ public class ListingResource {
                                 @FormParam("description") String description) {
 
         try {
-            if (!("business".equals(type) || "leisure".equals(type))) {
+            if (!("business".equals(type) || "leisure".equals(type) || "both".equals(type))) {
                 ErrorDisplay error = new ErrorDisplay("invalid listing type", 400);
                 return Response.status(400).entity(error).build();
             }
