@@ -38,7 +38,7 @@ cors.allowedHeadersParam: Authorization,X-Requested-With,Content-Type,Accept,Ori
 cors.preflightMaxAgeParam: 5184000
 
 notification.service.user = airtube.butler@gmail.com
-notification.service.password = nm0gultuber
+notification.service.password = m0gultuber
 
 user.dao.create.table.statement: CREATE TABLE IF NOT EXISTS Users
                                  (
