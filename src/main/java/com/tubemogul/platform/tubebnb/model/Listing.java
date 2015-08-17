@@ -12,8 +12,9 @@ public class Listing {
     private final String name;
     private final String description;
     private final String imageLink;
+    private final String authCode;
 
-    public Listing(String type, int locationId, String email, int listingId, String name, String description, String imageLink) {
+    public Listing(String type, int locationId, String email, int listingId, String name, String description, String imageLink, String authCode) {
         this.type = type;
         this.locationId = locationId;
         this.email = email;
@@ -21,6 +22,11 @@ public class Listing {
         this.name = name;
         this.description = description;
         this.imageLink = imageLink;
+        this.authCode = authCode;
+    }
+
+    public String getAuthCode() {
+        return authCode;
     }
 
     public String getImageLink() {
