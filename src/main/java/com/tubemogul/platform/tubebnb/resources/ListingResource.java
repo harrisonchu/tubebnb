@@ -88,7 +88,7 @@ public class ListingResource {
     }
 
     @POST
-    @Path("/create/")
+    @Path("/update/")
     @Produces(MediaType.APPLICATION_JSON)
     @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
     public Response editListing(@FormParam("email") String email,
