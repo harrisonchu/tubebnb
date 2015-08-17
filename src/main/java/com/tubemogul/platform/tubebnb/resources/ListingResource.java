@@ -5,6 +5,7 @@ import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
 import com.tubemogul.platform.tubebnb.dao.ListingsDAO;
 import com.tubemogul.platform.tubebnb.exceptions.ErrorDisplay;
 import com.tubemogul.platform.tubebnb.model.Listing;
+import com.tubemogul.platform.tubebnb.service.NotificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class ListingResource {
 
     @Autowired
     public ListingsDAO listingsDAO;
+
+    @Autowired
+    NotificationService notificationService;
 
     @GET
     @Path("/get/{email}/")
@@ -72,13 +76,45 @@ public class ListingResource {
 
             Listing listingResponse = listingsDAO.createListing(email, locationId, type, name, description, imageLink, authCode);
 
+            notificationService.sendMessage(email, "AirTube created listing confirmation", "Hi! \n\n\n " +
+                    "Your listing has been created.  Please use this code to edit or delete your posting " + authCode);
+
             return Response.ok(listingResponse).build();
         } catch (Exception e) {
             LOGGER.error("Error during create ", e);
             ErrorDisplay error = new ErrorDisplay(e.getMessage(), 400);
             return Response.status(400).entity(error).build();
         }
+    }
 
+    @POST
+    @Path("/create/")
+    @Produces(MediaType.APPLICATION_JSON)
+    @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
+    public Response editListing(@FormParam("email") String email,
+            @FormParam("location_id") Integer locationId,
+            @FormParam("type") String type,
+            @FormParam("name") String name,
+            @FormParam("description") String description,
+            @FormParam("image_link") String imageLink,
+            @FormParam("auth_code") String authCode) {
+
+        try {
+            if (!("business".equals(type) || "leisure".equals(type) || "both".equals(type))) {
+                ErrorDisplay error = new ErrorDisplay("invalid listing type", 400);
+                return Response.status(400).entity(error).build();
+            }
+
+            Listing originalListing = listingsDAO.getListingByEmail(email);
+            listingsDAO.deleteListingById(originalListing.getListingId());
+            Listing listingResponse = listingsDAO.createListing(email, locationId, type, name, description, imageLink, authCode);
+
+            return Response.ok(listingResponse).build();
+        } catch (Exception e) {
+            LOGGER.error("Error during create ", e);
+            ErrorDisplay error = new ErrorDisplay(e.getMessage(), 400);
+            return Response.status(400).entity(error).build();
+        }
     }
 
     @POST
