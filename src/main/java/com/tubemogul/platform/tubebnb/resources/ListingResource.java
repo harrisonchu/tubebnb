@@ -88,7 +88,7 @@ public class ListingResource {
     }
 
     @POST
-    @Path("/update/")
+    @Path("/update/{id}/")
     @Produces(MediaType.APPLICATION_JSON)
     @JacksonFeatures(serializationEnable = {SerializationFeature.INDENT_OUTPUT})
     public Response editListing(@FormParam("email") String email,
@@ -97,7 +97,8 @@ public class ListingResource {
             @FormParam("name") String name,
             @FormParam("description") String description,
             @FormParam("image_link") String imageLink,
-            @FormParam("auth_code") String authCode) {
+            @FormParam("auth_code") String authCode,
+            @PathParam("id") int id) {
 
         try {
             if (!("business".equals(type) || "leisure".equals(type) || "both".equals(type))) {
@@ -105,11 +106,9 @@ public class ListingResource {
                 return Response.status(400).entity(error).build();
             }
 
-            Listing originalListing = listingsDAO.getListingByEmail(email);
-            listingsDAO.deleteListingById(originalListing.getListingId());
-            Listing listingResponse = listingsDAO.createListing(email, locationId, type, name, description, imageLink, authCode);
+            Listing listing = listingsDAO.updateListingById(id, email, locationId, type, name, description, imageLink, authCode);
 
-            return Response.ok(listingResponse).build();
+            return Response.ok(listing).build();
         } catch (Exception e) {
             LOGGER.error("Error during create ", e);
             ErrorDisplay error = new ErrorDisplay(e.getMessage(), 400);

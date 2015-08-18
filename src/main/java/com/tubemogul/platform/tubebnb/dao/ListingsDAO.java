@@ -41,6 +41,9 @@ public class ListingsDAO {
 
     private String deleteListingString = "DELETE FROM Listings WHERE listing_id = ?";
 
+    private String updateListingString = "UPDATE Listings SET email=?, location_id=?, type=?, name=?, description=?, image_link=?, auth_code=? "
+            + "WHERE listing_id=?";
+
     private Connection connection;
 
     @PostConstruct
@@ -51,6 +54,36 @@ public class ListingsDAO {
 
         Statement createTableStatement = connection.createStatement();
         createTableStatement.execute(createTableString);
+    }
+
+    public Listing updateListingById(int id, String email,
+            Integer locationId,
+            String type,
+            String name,
+            String description,
+            String imageLink,
+            String authCode) throws Exception {
+        PreparedStatement stmt = null;
+        try {
+            stmt = connection.prepareStatement(updateListingString);
+            stmt.setString(1, email);
+            stmt.setInt(2, locationId);
+            stmt.setString(3, type);
+            stmt.setString(4, name);
+            stmt.setString(5, description);
+            stmt.setString(6, imageLink);
+            stmt.setString(7, authCode);
+            stmt.setInt(8, id);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOGGER.error("An exception occurred while trying to retrieve a listing");
+        } finally {
+            try {
+                stmt.close();
+            } catch (Exception e) {}
+        }
+        return getListingByEmail(email);
     }
 
     public void deleteListingById(int listingId) throws Exception {
